@@ -1,21 +1,20 @@
-// Require express so we can have access to the entire express APPI
+
 var express = require('express');
 
-// create our app, calling the express library
+// Create our app
 var app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(function(req, res, next){
-  if(req.headers['x-forwarded-proto'] === 'http') {
-    next();
-  } else {
+app.use(function (req, res, next){
+  if (req.headers['x-forwarded-proto'] === 'https') {
     res.redirect('http://' + req.hostname + req.url);
+  } else {
+    next();
   }
 });
 
-// serve all the pages under public folder
 app.use(express.static('public'));
 
-app.listen(port, function(){
+app.listen(PORT, function () {
   console.log('Express server is up on port ' + PORT);
 });
